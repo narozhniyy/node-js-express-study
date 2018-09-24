@@ -1,0 +1,15 @@
+<% include partials/header.ejs %>
+<% if (books.length) { %>
+    <% books.forEach(function (book) { %>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="text-muted pull-right">
+                    <%= book.title + ' by ' + book.author %>
+                </div>
+            </div>
+       </div>
+    <%  }); %>
+<% } else { %>
+    No books, try later <a href="/book/add">Add a new book</a>
+<% } %>
+<% include partials/footer.ejs %>
