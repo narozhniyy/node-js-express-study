@@ -1,15 +1,24 @@
 <% include partials/header.ejs %>
+<div class="container">
 <% if (books.length) { %>
+    <h2>Books list</h2>
     <% books.forEach(function (book) { %>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <div class="text-muted pull-right">
+                    <%= book.date.toDateString() %>
+                </div>
+                <div class="panel-body">
                     <%= book.title + ' by ' + book.author %>
                 </div>
             </div>
        </div>
     <%  }); %>
 <% } else { %>
-    No books, try later <a href="/book/add">Add a new book</a>
+    No books, try later
 <% } %>
+    <div class="row">
+        <a class="btn btn-success" href="/book/add">Add a new book</a>
+    </div>
+</div>
 <% include partials/footer.ejs %>

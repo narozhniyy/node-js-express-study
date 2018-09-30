@@ -39,7 +39,7 @@ app.post('/book/add', function (request, response) {
     books.push({
         author: request.body.author,
         title: request.body.title,
-        date: Date.now()
+        date: new Date()
     });
 
     response.redirect('/books');
