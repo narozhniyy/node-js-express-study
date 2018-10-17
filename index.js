@@ -3,14 +3,33 @@ var express = require('express'),
     logger = require('morgan'),
     path = require('path'),
     bodyParser = require('body-parser'),
+    fs = require('fs'),
     app = express();
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
+app.use(logger('short'));
 
 app.use(bodyParser.urlencoded({extended: false}));
+
+app.use(function (err, request, response, next) {
+    var filePath = path.join(__dirname, 'static', request.url);
+    fs.stat(filePath, function (err, fileInfo) {
+        if (err) {
+            console.error(err);
+            next(err);
+        }
+
+        if (fileInfo.isFile()) {
+            response.sendFile(filePath)
+        } else {
+            next();
+            console.log('we are in else');
+        }
+    })
+
+});
 
 app.get('/', function (request, response) {
     response.render('index', {
@@ -64,9 +83,14 @@ app.post('/book/add', function (request, response) {
    }
 });*/
 
-app.use(function (request, response) {
+app.use(function (err, request, response, next) {
+   response.statusCode = 500;
+   response.end('Internal server error!');
+});
+
+/*app.use(function (request, response) {
     response.statusCode = 404;
     response.end("Page not found!");
-});
+});*/
 
 http.createServer(app).listen(3000);
