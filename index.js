@@ -4,7 +4,8 @@ var express = require('express'),
     path = require('path'),
     bodyParser = require('body-parser'),
     fs = require('fs'),
-    app = express();
+    app = express(),
+    apiRouter = require('./routes/api_router');
 
 app.set('views', path.resolve(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -12,6 +13,8 @@ app.set('view engine', 'ejs');
 app.use(logger('short'));
 
 app.use(bodyParser.urlencoded({extended: false}));
+
+app.use('/api', apiRouter);
 
 app.use(function (err, request, response, next) {
     var filePath = path.join(__dirname, 'static', request.url);
@@ -87,6 +90,9 @@ app.use(function (err, request, response, next) {
    response.statusCode = 500;
    response.end('Internal server error!');
 });
+
+// THIS NEED FOR HEROKU
+//const PORT = process.env.PORT || 5000;
 
 /*app.use(function (request, response) {
     response.statusCode = 404;
